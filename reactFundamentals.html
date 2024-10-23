@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+
+	<body>
+		<div id="app"></div>
+
+		<!-- Normal way of manipulating the DOM using plain javascript -->
+
+		<!-- <script type="text/javascript"> 
+			    const app = document.getElementById('app');
+			    const header = document.createElement('hi');
+			    const text = 'H1 element';
+			    const headerContent = document.createTextNode(text);
+			    header.appendChild(headerContent);
+			    app.appendChild(header);
+		</script> -->
+
+		<!-- Start using React -->
+
+		<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+		<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+		<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+		<!-- React uses JSX which needs to be compiled(using babel) into JavaScript. -->
+
+		<script type="text/jsx">
+			const app = document.getElementById("app");
+			const root = ReactDOM.createRoot(app);
+			root.render(<h1>Some text</h1>);
+
+			//Uncaught SyntaxError: Unexpected token '<' (at react.html:19:21) ||  <h1>...</h1> is not valid Javascript. This piece of code is JSX.
+			//add babel and inform Babel what code to transform by changing the script type to type=text/jsx.
+
+			//1. Components
+
+			//function names should be started from a capital letter
+
+			function Header() {
+				return <h1>Coming from a function/component</h1>;
+			}
+
+			//root.render(header()); //OK
+			//root.render(header); //wrong
+			//root.render(<header />); //wrong
+			//root.render(<Header />);
+
+			function HomePage() {
+				return (
+					<div>
+						<h1>Coming from homePage</h1>
+						<Header />
+						<NewHeader title="Coming as a prop" />
+						<IterateThroughAList />
+						<HandleStates />
+					</div>
+				);
+			}
+			root.render(<HomePage />);
+
+			//2. Props
+
+			function NewHeader({ title }) {
+				//return <h1>title</h1>; //this will just print "title", not the actual title
+				return <h1>{title}</h1>;
+			}
+
+			function IterateThroughAList() {
+				const names = [
+					"Ada Lovelace",
+					"Grace Hopper",
+					"Margaret Hamilton",
+				];
+				return (
+					<div>
+						<ul>
+							{names.map((name) => (
+								<li key={name}>{name}</li>
+							))}
+						</ul>
+					</div>
+				);
+			}
+
+			//3.States
+
+			function HandleStates() {
+				const [clickCounts, setLikeCounts] = React.useState(0);
+
+				function handleClicks() {
+					setLikeCounts(clickCounts + 1);
+				}
+
+				return (
+					<button onClick={handleClicks}>click {clickCounts}</button>
+				);
+			}
+		</script>
+	</body>
+</html>
